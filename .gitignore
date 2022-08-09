@@ -1,3 +1,6 @@
+# IDEs Folders
+.idea
+
 # Logs
 logs
 *.log
