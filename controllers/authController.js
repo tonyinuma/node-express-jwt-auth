@@ -1,7 +1,7 @@
 const authController = {};
 
 authController.loginGet = (req, res) => {
-    res.send('login GET');
+    res.render('login');
 }
 
 authController.loginPost = (req, res) => {
@@ -9,7 +9,7 @@ authController.loginPost = (req, res) => {
 }
 
 authController.signupGet = (req, res) => {
-    res.send('signup GET');
+    res.render('signup');
 }
 
 authController.signupPost = (req, res) => {
