@@ -1,3 +1,5 @@
+const User = require('../models/User')
+
 const authController = {};
 
 authController.loginGet = (req, res) => {
@@ -12,8 +14,16 @@ authController.signupGet = (req, res) => {
     res.render('signup');
 }
 
-authController.signupPost = (req, res) => {
-    res.send('signup POST');
+authController.signupPost = async (req, res) => {
+
+    const {email, password} = req.body;
+    try {
+        const user = await User.create({email, password})
+        res.status(201).json(user);
+    } catch (e) {
+        console.log(e);
+        res.status(400).send('Error, User not created');
+    }
 }
 
 module.exports = authController;
