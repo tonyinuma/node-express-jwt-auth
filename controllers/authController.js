@@ -2,6 +2,26 @@ const User = require('../models/User')
 
 const authController = {};
 
+const handleErrors = (err) => {
+
+    let errors = {};
+
+    // Duplicate Error Code
+    if (err.code === 11000) {
+        errors.email = 'Email already exist';
+        return errors;
+    }
+
+    // Validation Errors
+    if (err.message.includes('user validation failed')) {
+        Object.values(err.errors).forEach(({properties}) => {
+            errors[properties.path] = properties.message;
+        });
+    }
+
+    return errors;
+}
+
 authController.loginGet = (req, res) => {
     res.render('login');
 }
@@ -20,9 +40,9 @@ authController.signupPost = async (req, res) => {
     try {
         const user = await User.create({email, password})
         res.status(201).json(user);
-    } catch (e) {
-        console.log(e);
-        res.status(400).send('Error, User not created');
+    } catch (err) {
+        const errors = handleErrors(err)
+        res.status(400).json({errors});
     }
 }
 
