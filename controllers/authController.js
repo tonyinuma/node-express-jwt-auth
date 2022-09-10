@@ -37,7 +37,7 @@ authController.signupGet = (req, res) => {
 
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
-    return jwt.sing({ id }, 'secret_id', {
+    return jwt.sign({ id }, 'secret_id', {
         expiresIn: maxAge
     })
 }
