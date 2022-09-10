@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const jwt = require('js')
 
 const authController = {};
 
@@ -14,7 +15,7 @@ const handleErrors = (err) => {
 
     // Validation Errors
     if (err.message.includes('user validation failed')) {
-        Object.values(err.errors).forEach(({properties}) => {
+        Object.values(err.errors).forEach(({ properties }) => {
             errors[properties.path] = properties.message;
         });
     }
@@ -34,15 +35,22 @@ authController.signupGet = (req, res) => {
     res.render('signup');
 }
 
+const maxAge = 3 * 24 * 60 * 60;
+const createToken = (id) => {
+    return jwt.sing({ id }, 'secret_id', {
+        expiresIn: maxAge
+    })
+}
+
 authController.signupPost = async (req, res) => {
 
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     try {
-        const user = await User.create({email, password})
+        const user = await User.create({ email, password })
         res.status(201).json(user);
     } catch (err) {
         const errors = handleErrors(err)
-        res.status(400).json({errors});
+        res.status(400).json({ errors });
     }
 }
 
