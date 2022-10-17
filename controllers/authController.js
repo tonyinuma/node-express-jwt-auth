@@ -78,4 +78,9 @@ authController.signupPost = async (req, res) => {
     }
 }
 
+authController.logout = async (req, res) => {
+    res.clearCookie('jwt');
+    res.redirect('/');
+}
+
 module.exports = authController;
